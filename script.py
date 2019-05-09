@@ -114,6 +114,11 @@ def blrObjFunction(initialWeights, *args):
     error = 0
     error_grad = np.zeros((n_features + 1, 1))
 
+    ##################
+    # YOUR CODE HERE #
+    ##################
+    # HINT: Do not forget to add the bias term to your input data
+    
     bias_matrix = np.ones((n_data, 1))
     features_number_including_bias = n_features + 1
     w = initialWeights.reshape((features_number_including_bias, 1))
@@ -125,17 +130,12 @@ def blrObjFunction(initialWeights, *args):
     result2 = (1 - labeli) * np.log(1 - theta1)
     n = theta1.shape[0]
     error = (-1 / n) * np.sum(result1 + result2)
-
-    # print("res is")
-    # print(res)
+    #print("calculting error grad")
 
     error_grad = (1 / n) * np.sum(((theta1 - labeli) * train_data), axis=0)
     # print(error)
     # print(error_grad)
-    ##################
-    # YOUR CODE HERE #
-    ##################
-    # HINT: Do not forget to add the bias term to your input data
+    
 
     return error, error_grad
 
@@ -165,7 +165,9 @@ def blrPredict(W, data):
     bias_matrix = np.ones((n, 1))
     data = np.column_stack((bias_matrix, data))
     wt = np.dot(data, W)
+    #print(wt)
     val = sigmoid(wt)
+    #print(val)
     label = np.argmax(val, axis=1)
     label = label.reshape((data.shape[0], 1))
 
@@ -198,7 +200,22 @@ def mlrObjFunction(params, *args):
     # YOUR CODE HERE #
     ##################
     # HINT: Do not forget to add the bias term to your input data
-
+    bias_matrix = np.ones((n_data, 1))
+    features_number_including_bias = n_features + 1
+    w = params.reshape((features_number_including_bias, 1))
+    train_data = np.column_stack((bias_matrix, train_data))
+    
+    num = np.exp(np.dot(train_data,w))
+    #we do sum column wise using np.sum , then we calculate theta as num/den
+    
+    den = np.sum(np.exp(np.dot(train_data, w)), axis=1).reshape(n_data, 1)
+    theta = num/den 
+    
+    #now we calculate error as e(w1,..wk) = summation summation(ynk) ln thetank
+    error = -1*np.sum(np.sum(labeli*np.log(theta)))
+    resulting_subtraction = theta - labeli
+    error_grad = np.dot(train_data.T, resulting_subtraction)
+    
     return error, error_grad
 
 
@@ -223,7 +240,18 @@ def mlrPredict(W, data):
     # YOUR CODE HERE #
     ##################
     # HINT: Do not forget to add the bias term to your input data
-
+    n = data.shape[0]
+    bias_matrix = np.ones((n, 1))
+    data = np.column_stack((bias_matrix, data))
+    wt = np.dot(data, W)
+    
+    softMaxProb = np.exp(wt)/np.sum(np.exp(wt))
+    num = softMaxProb.shape[0]
+    for i in range(num):
+        label[i] = np.argmax(softMaxProb[i])
+    
+    label = label.reshape(label.shape[0], 1)
+    
     return label
 
 
