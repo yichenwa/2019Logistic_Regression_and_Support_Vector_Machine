@@ -269,32 +269,33 @@ n_train = train_data.shape[0]
 
 # number of features
 n_feature = train_data.shape[1]
-#
-# Y = np.zeros((n_train, n_class))
-# for i in range(n_class):
-#     Y[:, i] = (train_label == i).astype(int).ravel()
-#
-# # Logistic Regression with Gradient Descent
-# W = np.zeros((n_feature + 1, n_class))
-# initialWeights = np.zeros((n_feature + 1, 1))
-# opts = {'maxiter': 100}
-# for i in range(n_class):
-#     labeli = Y[:, i].reshape(n_train, 1)
-#     args = (train_data, labeli)
-#     nn_params = minimize(blrObjFunction, initialWeights, jac=True, args=args, method='CG', options=opts)
-#     W[:, i] = nn_params.x.reshape((n_feature + 1,))
-#
-# # Find the accuracy on Training Dataset
-# predicted_label = blrPredict(W, train_data)
-# print('\n Training set Accuracy:' + str(100 * np.mean((predicted_label == train_label).astype(float))) + '%')
-#
-# # Find the accuracy on Validation Dataset
-# predicted_label = blrPredict(W, validation_data)
-# print('\n Validation set Accuracy:' + str(100 * np.mean((predicted_label == validation_label).astype(float))) + '%')
-#
-# # Find the accuracy on Testing Dataset
-# predicted_label = blrPredict(W, test_data)
-# print('\n Testing set Accuracy:' + str(100 * np.mean((predicted_label == test_label).astype(float))) + '%')
+
+Y = np.zeros((n_train, n_class))
+for i in range(n_class):
+    Y[:, i] = (train_label == i).astype(int).ravel()
+
+# Logistic Regression with Gradient Descent
+W = np.zeros((n_feature + 1, n_class))
+initialWeights = np.zeros((n_feature + 1, 1))
+opts = {'maxiter': 100}
+for i in range(n_class):
+    labeli = Y[:, i].reshape(n_train, 1)
+    args = (train_data, labeli)
+    nn_params = minimize(blrObjFunction, initialWeights, jac=True, args=args, method='CG', options=opts)
+    W[:, i] = nn_params.x.reshape((n_feature + 1,))
+
+# Find the accuracy on Training Dataset
+predicted_label = blrPredict(W, train_data)
+print('\n Training set Accuracy:' + str(100 * np.mean((predicted_label == train_label).astype(float))) + '%')
+
+# Find the accuracy on Validation Dataset
+predicted_label = blrPredict(W, validation_data)
+print('\n Validation set Accuracy:' + str(100 * np.mean((predicted_label == validation_label).astype(float))) + '%')
+
+# Find the accuracy on Testing Dataset
+predicted_label = blrPredict(W, test_data)
+print('\n Testing set Accuracy:' + str(100 * np.mean((predicted_label == test_label).astype(float))) + '%')
+
 
 """
 Script for Support Vector Machine
