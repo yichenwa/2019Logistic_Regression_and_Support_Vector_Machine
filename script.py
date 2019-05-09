@@ -203,7 +203,7 @@ def mlrObjFunction(params, *args):
     # HINT: Do not forget to add the bias term to your input data
     bias_matrix = np.ones((n_data, 1))
     features_number_including_bias = n_feature + 1
-    w = params.reshape((features_number_including_bias, 1))
+    w = params.reshape((features_number_including_bias, n_class))
     train_data = np.column_stack((bias_matrix, train_data))
     
     num = np.exp(np.dot(train_data,w))
