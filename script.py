@@ -216,7 +216,7 @@ def mlrObjFunction(params, *args):
     error = -1*np.sum(np.sum(labeli*np.log(theta)))
     resulting_subtraction = theta - labeli
     error_grad = np.dot(train_data.T, resulting_subtraction)
-    
+    error_grad = error_grad.ravel()   
     return error, error_grad
 
 
